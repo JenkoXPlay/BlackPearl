@@ -1,14 +1,23 @@
-const http = require("http");
+require("./mysql");
 
-const host = 'localhost';
+const express = require("express");
+
+const users = require('./src/routes/users.routes');
+
+const cors = require('cors');
+const morgan = require('morgan');
+const bodyParser = require("body-parser");
+const app = express();
+
 const port = 3000;
 
-const requestListener = function(req, res) {
-    res.writeHead(200);
-    res.end("Server on !");
-}
+app.use(morgan('combined')); 
+app.use(cors()); 
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+app.listen(port, () => console.log('Server app listening on port ' + port));
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
-});
+// call api route
+app.use(users);

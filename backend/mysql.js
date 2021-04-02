@@ -1,15 +1,18 @@
 const mysql = require('mysql');
-const dbConfig = require('./config/db.config');
+const dbConfig = require('./config/db.config.js');
 
 // modifier les creds et mettre dans un fichier env
-const db = mysql.createConnection({
+const connection = mysql.createConnection({
     host: dbConfig.HOST,
-    user: dbConfig.user,
+    port: dbConfig.PORT,
+    user: dbConfig.USER,
     password: dbConfig.PASSWORD,
     database: dbConfig.DB
 });
 
-db.connect(function(err) {
+connection.connect(function(err) {
     if (err) throw err;
     console.log("MySQL connected !");
 });
+
+module.exports = connection;
